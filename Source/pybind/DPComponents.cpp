@@ -29,7 +29,7 @@ void addDPComponents(py::module_ mDP) {
 		.def("single_voltage", &CPS::DP::SimNode::singleVoltage, "phase_type"_a=CPS::PhaseType::Single)
 		.def_readonly_static("gnd", &CPS::DP::SimNode::GND);
 
-	
+
 	py::module mDPPh1 = mDP.def_submodule("ph1", "single phase dynamic phasor models");
 	addDPPh1Components(mDPPh1);
 
@@ -79,6 +79,12 @@ void addDPPh1Components(py::module_ mDPPh1) {
         .def("set_parameters", &CPS::DP::Ph1::Inductor::setParameters, "L"_a)
 		.def("connect", &CPS::DP::Ph1::Inductor::connect)
 		.def_property("L", createAttributeGetter<CPS::Real>("L"), createAttributeSetter<CPS::Real>("L"));
+
+	py::class_<CPS::DP::Ph1::ResIndSeries, std::shared_ptr<CPS::DP::Ph1::ResIndSeries>, CPS::SimPowerComp<CPS::Complex>>(mDPPh1, "ResInductor", py::multiple_inheritance())
+        .def(py::init<std::string>())
+		.def(py::init<std::string, CPS::Logger::Level>())
+        .def("set_parameters", &CPS::DP::Ph1::ResIndSeries::setParameters, "R"_a, "L"_a)
+		.def("connect", &CPS::DP::Ph1::ResIndSeries::connect);
 
 	py::class_<CPS::DP::Ph1::NetworkInjection, std::shared_ptr<CPS::DP::Ph1::NetworkInjection>, CPS::SimPowerComp<CPS::Complex>>(mDPPh1, "NetworkInjection", py::multiple_inheritance())
         .def(py::init<std::string, CPS::Logger::Level>(), "name"_a, "loglevel"_a = CPS::Logger::Level::off)
