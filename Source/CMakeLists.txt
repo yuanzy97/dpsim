@@ -26,7 +26,7 @@ endif()
 if(WITH_SUNDIALS)
 	list(APPEND DPSIM_SOURCES DAESolver.cpp)
 	#For ODE-Solver class:
-    list(APPEND DPSIM_SOURCES ODESolver.cpp)
+    	list(APPEND DPSIM_SOURCES ODESolver.cpp)
 	list(APPEND DPSIM_INCLUDE_DIRS ${SUNDIALS_INCLUDE_DIRS})
 	list(APPEND DPSIM_LIBRARIES ${SUNDIALS_LIBRARIES})
 endif()
@@ -51,6 +51,20 @@ if(WITH_SPARSE)
 	list(APPEND DPSIM_SOURCES
 		MNASolverEigenSparse.cpp
 	)
+	if(WITH_KLU)
+		list(APPEND DPSIM_SOURCES
+			MNASolverEigenKLU.cpp
+		)
+		list(APPEND DPSIM_SOURCES
+			MNASolverEigenPartialKLU.cpp
+		)
+	endif()
+	if(WITH_NICSLU)
+		list(APPEND DPSIM_SOURCES
+			MNASolverEigenNICSLU.cpp)
+		list(APPEND DPSIM_SOURCES
+			MNASolverEigenPartialNICSLU.cpp)
+	endif()
 endif()
 
 if(WITH_CUDA)

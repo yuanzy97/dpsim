@@ -53,7 +53,7 @@ CommandLineArgs::CommandLineArgs(int argc, char *argv[],
 		{ "start-in",		required_argument,	0, 'i', "SECS", "" },
 		{ "solver-domain",	required_argument,	0, 'D', "(SP|DP|EMT)", "Domain of solver" },
 		{ "solver-type",	required_argument,	0, 'T', "(NRP|MNA)", "Type of solver" },
-		{ "solver-mna-impl", required_argument, 0, 'U', "(EigenDense|EigenSparse|CUDADense|CUDASparse)", "Type of MNA Solver implementation"},
+		{ "solver-mna-impl", required_argument, 0, 'U', "(EigenDense|EigenSparse|EigenKLU|EigenPartialKLU|EigenNICSLU|EigenPartialNICSLU|CUDADense|CUDASparse)", "Type of MNA Solver implementation"},
 		{ "option",		required_argument,	0, 'o', "KEY=VALUE", "User-definable options" },
 		{ "name",		required_argument,	0, 'n', "NAME", "Name of log files" },
 		{ "params",		required_argument,	0, 'p', "PATH", "Json file containing parametrization"},
@@ -106,7 +106,7 @@ CommandLineArgs::CommandLineArgs(
 		{ "start-in",		required_argument,	0, 'i', "SECS", "" },
 		{ "solver-domain",	required_argument,	0, 'D', "(SP|DP|EMT)", "Domain of solver" },
 		{ "solver-type",	required_argument,	0, 'T', "(NRP|MNA)", "Type of solver" },
-		{ "solver-mna-impl", required_argument, 0, 'U', "(EigenDense|EigenSparse|CUDADense|CUDASparse)", "Type of MNA Solver implementation"},
+		{ "solver-mna-impl", required_argument, 0, 'U', "(EigenDense|EigenSparse|EigenKLU|EigenPartialKLU|EigenNICSLU|EigenPartialNICSLU|CUDADense|CUDASparse)", "Type of MNA Solver implementation"},
 		{ "option",		required_argument,	0, 'o', "KEY=VALUE", "User-definable options" },
 		{ "name",		required_argument,	0, 'n', "NAME", "Name of log files" },
 		{ 0 }
@@ -179,10 +179,27 @@ void CommandLineArgs::parseArguments(int argc, char *argv[])
 				auto p = arg.find("=");
 				auto key = arg.substr(0, p);
 				auto value = arg.substr(p + 1);
-				if (p != String::npos)
-					options[key] = value;
+
+				if (p != String::npos) {
+
+					// try to convert to real number
+					try {
+						options[key] = std::stod(value);
+					}
+					catch (...) {}
+
+					// try to convert to boolean
+					if (value == "true")
+						options_bool[key] = true;
+					else if (value == "false")
+					 	options_bool[key] = false;
+
+					// check if at least one conversion was successful
+					if ((options.find(key) == options.end()) && (options_bool.find(key) == options_bool.end()))
+						std::cerr << "Value " << value << " of option with key " << key << " could not be converted.";
 
 				break;
+				}
 			}
 
 			case 'l': {
@@ -234,6 +251,14 @@ void CommandLineArgs::parseArguments(int argc, char *argv[])
 					mnaImpl = MnaSolverFactory::EigenDense;
 				} else if (arg == "EigenSparse") {
 					mnaImpl = MnaSolverFactory::EigenSparse;
+				} else if (arg == "EigenKLU") {
+					mnaImpl = MnaSolverFactory::EigenKLU;
+				} else if (arg == "EigenPartialKLU") {
+					mnaImpl = MnaSolverFactory::EigenPartialKLU;
+				} else if (arg == "EigenNICSLU") {
+					mnaImpl = MnaSolverFactory::EigenNICSLU;
+				} else if (arg == "EigenPartialNICSLU") {
+					mnaImpl = MnaSolverFactory::EigenPartialNICSLU;
 				} else if (arg == "CUDADense") {
 					mnaImpl = MnaSolverFactory::CUDADense;
 				} else if (arg == "CUDASparse") {
