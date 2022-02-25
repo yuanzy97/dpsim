@@ -48,6 +48,9 @@ namespace DPsim {
 		using MnaSolver<VarType>::mLeftSideVectorHarm;
 		using MnaSolver<VarType>::mFrequencyParallel;
 		using MnaSolver<VarType>::mSLog;
+		using MnaSolver<VarType>::mLUTimes;
+		using MnaSolver<VarType>::mSolveTimes;
+		using MnaSolver<VarType>::mRecomputationTimes;
 
 		/// Create system matrix
 		virtual void createEmptySystemMatrix() override;
@@ -68,6 +71,13 @@ namespace DPsim {
 		virtual std::shared_ptr<CPS::Task> createSolveTaskHarm(UInt freqIdx) override;
 		/// Logging of system matrices and source vector
 		virtual void logSystemMatrices() override;
+
+		/// Logging of right-hand-solving times
+		virtual void logSolveTime() override;
+		/// Logging of LU factorization times
+		virtual void logLUTime() override;
+		/// Logging of LU refactorization time
+		virtual void logRecomputationTime() override;
 
 		// #### Methods for system recomputation over time ####
 		// -------- TODO: Implement methods for EigenDense ----

@@ -64,6 +64,9 @@ namespace DPsim {
 		using MnaSolver<VarType>::mSystemMatrixRecomputation;
 		using MnaSolver<VarType>::hasVariableComponentChanged;
 		using MnaSolver<VarType>::mNumRecomputations;
+		using MnaSolver<VarType>::mLUTimes;
+		using MnaSolver<VarType>::mSolveTimes;
+		using MnaSolver<VarType>::mRecomputationTimes;
 
 		// #### General
 		/// Create system matrix
@@ -96,6 +99,14 @@ namespace DPsim {
 		virtual std::shared_ptr<CPS::Task> createSolveTaskHarm(UInt freqIdx) override;
 		/// Logging of system matrices and source vector
 		virtual void logSystemMatrices() override;
+
+		/// Logging of right-hand-solving times
+		virtual void logSolveTime() override;
+		/// Logging of LU factorization times
+		virtual void logLUTime() override;
+		/// Logging of LU refactorization time
+		virtual void logRecomputationTime() override;
+		
 		/// Solves system for single frequency
 		virtual void solve(Real time, Int timeStepCount) override;
 		/// Solves system for multiple frequencies

@@ -103,12 +103,11 @@ namespace DPsim {
 		/// Logging of system matrices and source vector
 		virtual void logSystemMatrices() override;
 
-		/// logging LU decomposition times
-		virtual void logLUTime() override;
-
-		/// logging solve for rhs times
+		/// Logging of right-hand-solving times
 		virtual void logSolveTime() override;
-
+		/// Logging of LU factorization times
+		virtual void logLUTime() override;
+		/// Logging of LU refactorization time
 		virtual void logRecomputationTime() override;
 
 		/// Solves system for single frequency

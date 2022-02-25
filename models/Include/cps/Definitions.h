@@ -26,6 +26,7 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <Eigen/NICSLUSupport>
 
 #ifdef __clang__
 #elif defined(__GNUC__)

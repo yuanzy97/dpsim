@@ -116,6 +116,13 @@ namespace DPsim {
 		/// Right side vector logger
 		std::shared_ptr<DataLogger> mRightVectorLog;
 
+		/// LU factorization times logger
+		std::vector<Real> mLUTimes;
+		/// Right-hand-solving times logger
+		std::vector<Real> mSolveTimes;
+		/// LU refactorization times logger
+		std::vector<Real> mRecomputationTimes;
+
 		/// Constructor should not be called by users but by Simulation
 		MnaSolver(String name,
 			CPS::Domain domain = CPS::Domain::DP,
@@ -166,6 +173,14 @@ namespace DPsim {
 
 		/// Logging of system matrices and source vector
 		virtual void logSystemMatrices() = 0;
+
+		/// Logging of right-hand-solving times
+		virtual void logSolveTime() = 0;
+		/// Logging of LU factorization times
+		virtual void logLUTime() = 0;
+		/// Logging of LU refactorization times
+		virtual void logRecomputationTime() = 0;
+
 
 		/// Create a solve task for this solver implementation
 		virtual std::shared_ptr<CPS::Task> createSolveTask() = 0;

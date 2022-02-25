@@ -297,7 +297,7 @@ template <typename VarType>
 void MnaSolverEigenNICSLU<VarType>::logLUTime()
 {
 	for (auto meas : mLUTimes) {
-		mSLog->info("LU factorization time: {:.6f}", meas);
+		mSLog->info("LU factorization time: {:.12f}", meas);
 	}
 }
 
@@ -316,6 +316,7 @@ void MnaSolverEigenNICSLU<VarType>::logSolveTime(){
 	mSLog->info("Maximum solve time: {:.12f}", solveMax);
 	mSLog->info("Number of solves: {:d}", mSolveTimes.size());
 }
+
 template <typename VarType>
 void MnaSolverEigenNICSLU<VarType>::logRecomputationTime(){
        Real recompSum = 0.0;
