@@ -21,6 +21,7 @@
 #cmakedefine WITH_RT
 #cmakedefine WITH_SHMEM
 #cmakedefine WITH_CIM
+#cmakedefine WITH_NICSLU
 #cmakedefine WITH_PYTHON
 #cmakedefine WITH_SUNDIALS
 #cmakedefine WITH_OPENMP

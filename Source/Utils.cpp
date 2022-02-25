@@ -234,6 +234,10 @@ void CommandLineArgs::parseArguments(int argc, char *argv[])
 					mnaImpl = MnaSolverFactory::EigenDense;
 				} else if (arg == "EigenSparse") {
 					mnaImpl = MnaSolverFactory::EigenSparse;
+				} else if (arg == "EigenNICSLU") {
+					mnaImpl = MnaSolverFactory::EigenNICSLU;
+				} else if (arg == "EigenPartialNICSLU") {
+					mnaImpl = MnaSolverFactory::EigenPartialNICSLU;
 				} else if (arg == "CUDADense") {
 					mnaImpl = MnaSolverFactory::CUDADense;
 				} else if (arg == "CUDASparse") {

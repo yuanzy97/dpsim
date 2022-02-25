@@ -87,6 +87,8 @@ namespace CPS {
 	///
 	typedef Eigen::SparseLU<SparseMatrix> LUFactorizedSparse;
 	///
+	typedef Eigen::NICSLU<Matrix> LUFactorizedNICSLU;
+	///
 	typedef Eigen::Matrix<Real, Eigen::Dynamic, 1> Vector;
 	///
 	template<typename VarType>
