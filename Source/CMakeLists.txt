@@ -59,12 +59,6 @@ if(WITH_SPARSE)
 			MNASolverEigenPartialKLU.cpp
 		)
 	endif()
-	if(WITH_NICSLU)
-		list(APPEND DPSIM_SOURCES
-			MNASolverEigenNICSLU.cpp)
-		list(APPEND DPSIM_SOURCES
-			MNASolverEigenPartialNICSLU.cpp)
-	endif()
 endif()
 
 if(WITH_CUDA)

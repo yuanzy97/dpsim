@@ -155,7 +155,6 @@ endif()
 # WITH_SPARSE and WITH_CUDA can be combined
 option(WITH_SPARSE       	"Use sparse matrices in MNA-Solver"	ON )
 option(WITH_KLU 			"Build with KLU" 				ON )
-option(WITH_NICSLU 			"Build with NICSLU" 			ON )
 
 include(CMakeDependentOption)
 cmake_dependent_option(WITH_GSL     	"Enable GSL"                         	ON 	"GSL_FOUND"       	OFF)
@@ -253,7 +252,6 @@ if(TOPLEVEL_PROJECT)
 	add_feature_info(Sundials  	WITH_SUNDIALS  		"Sundials solvers")
 	add_feature_info(PYBIND 	WITH_PYBIND 		"Use DPsim as a PYBIND module")
 	add_feature_info(KLU		WITH_KLU			"A sparse LU solver")
-	add_feature_info(NICSLU		WITH_NICSLU			"A sparse LU solver")
 	feature_summary(WHAT ALL VAR enabledFeaturesText)
 
 	if (FOUND_GIT_VERSION)
