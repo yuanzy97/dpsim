@@ -43,6 +43,8 @@ namespace DPsim {
 	protected:
 		/// Simulation name
 		String mName;
+		/// If there we use a solver plugin, this specifies its name (excluding .so)
+		String mSolverPluginName;
 		/// Final time of the simulation
 		Real mFinalTime = 0.001;
 		/// Time variable that is incremented at every step

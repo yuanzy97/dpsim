@@ -42,6 +42,7 @@ Simulation::Simulation(String name,	Logger::Level logLevel) :
 
 Simulation::Simulation(String name, CommandLineArgs& args) :
 	mName(name),
+	mSolverPluginName(args.solverPluginName),
 	mFinalTime(args.duration),
 	mTimeStep(args.timeStep),
 	mLogLevel(args.logLevel),
@@ -157,7 +158,7 @@ void Simulation::createMNASolver() {
 		} else {
 			// Default case with lu decomposition from mna factory
 			solver = MnaSolverFactory::factory<VarType>(mName + copySuffix, mDomain,
-												 mLogLevel, mMnaImpl);
+												 mLogLevel, mMnaImpl, mSolverPluginName);
 			solver->setTimeStep(mTimeStep);
 			solver->doSteadyStateInit(mSteadyStateInit);
 			solver->doFrequencyParallelization(mFreqParallel);
