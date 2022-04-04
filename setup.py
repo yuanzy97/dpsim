@@ -23,32 +23,26 @@ class CMakeBuild(build_ext):
         print('building CMake extension in %s configuration' % cfg)
 
         cmake_args = [
-            #f"-DCMAKE_BUILD_WITH_INSTALL_RPATH=TRUE",
+            f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}",
+            f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG={extdir}",
+            f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE={extdir}",
             f"-DPYTHON_EXECUTABLE={sys.executable}",
-            f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm
-            f"-DBUILD_EXAMPLES=OFF"
+            f"-DCMAKE_BUILD_TYPE={cfg}" # not used on MSVC, but no harm
         ]
 
         if platform.system() == 'Windows':
-            cmake_args += ['-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG=' + extdir]
-            cmake_args += ['-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE=' + extdir]
-            if sys.maxsize > 2**32:
-                cmake_args += ['-A', 'x64']
+            cmake_args += ['-A', 'x64']
             build_args = ['--', '/m']
         else:
-            cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir]
             if self.parallel:
                 build_args = ['--', '-j' + str(self.parallel)]
             else:
                 build_args = ['--', '-j4']
 
-        env = os.environ.copy()
-        cmake_args.append('-DCMAKE_CXX_FLAGS={} -DVERSION_INFO=\'{}\''
-                .format(env.get('CXXFLAGS', ''), self.distribution.get_version()))
-
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
 
+        env = os.environ.copy()
         if env.get('CMAKE_OPTS'):
             cmake_args += env.get('CMAKE_OPTS').split(' ')
 
@@ -65,6 +59,12 @@ class CMakeBuild(build_ext):
         )
 
 setup(
+    packages=find_packages(
+        where=['python/src'],
+        include=['dpsim*', 'dpsimpy'],
+    ),
+    package_dir={"": "python/src"},
+    python_requires=">=3.6",
     setup_requires=[
         'pytest-runner',
         'wheel'
